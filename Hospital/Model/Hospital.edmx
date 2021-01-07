@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HospitalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblBakhsh">
+          <Key>
+            <PropertyRef Name="BakshID" />
+          </Key>
+          <Property Name="BakshID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BakhshName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblOtagh">
+          <Key>
+            <PropertyRef Name="OtaghID" />
+          </Key>
+          <Property Name="OtaghID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodeOtagh" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BakshID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblPaziresh">
+          <Key>
+            <PropertyRef Name="PazireshID" />
+          </Key>
+          <Property Name="PazireshID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TarikhPaziresh" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="PezeshkID" Type="int" Nullable="false" />
+          <Property Name="OtaghID" Type="int" Nullable="false" />
+          <Property Name="NameBimar" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastNameBimar" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CodeMelliBimar" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeBimeBimar" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblPezeshk">
+          <Key>
+            <PropertyRef Name="PezeshkID" />
+          </Key>
+          <Property Name="PezeshkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTasviyeHeasb">
+          <Key>
+            <PropertyRef Name="TasviyeHeasbID" />
+          </Key>
+          <Property Name="TasviyeHeasbID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PazireshID" Type="int" Nullable="false" />
+          <Property Name="Mablagh" Type="bigint" Nullable="false" />
+          <Property Name="TarikhTasviyeHeasb" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblUsers">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PassWord" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Active" Type="smallint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblOtagh_tblBakhsh">
+          <End Role="tblBakhsh" Type="Self.tblBakhsh" Multiplicity="1" />
+          <End Role="tblOtagh" Type="Self.tblOtagh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBakhsh">
+              <PropertyRef Name="BakshID" />
+            </Principal>
+            <Dependent Role="tblOtagh">
+              <PropertyRef Name="BakshID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPaziresh_tblOtagh">
+          <End Role="tblOtagh" Type="Self.tblOtagh" Multiplicity="1" />
+          <End Role="tblPaziresh" Type="Self.tblPaziresh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblOtagh">
+              <PropertyRef Name="OtaghID" />
+            </Principal>
+            <Dependent Role="tblPaziresh">
+              <PropertyRef Name="OtaghID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPaziresh_tblPaziresh">
+          <End Role="tblPezeshk" Type="Self.tblPezeshk" Multiplicity="1" />
+          <End Role="tblPaziresh" Type="Self.tblPaziresh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPezeshk">
+              <PropertyRef Name="PezeshkID" />
+            </Principal>
+            <Dependent Role="tblPaziresh">
+              <PropertyRef Name="PezeshkID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblTasviyeHeasb_tblPaziresh">
+          <End Role="tblPaziresh" Type="Self.tblPaziresh" Multiplicity="1" />
+          <End Role="tblTasviyeHeasb" Type="Self.tblTasviyeHeasb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPaziresh">
+              <PropertyRef Name="PazireshID" />
+            </Principal>
+            <Dependent Role="tblTasviyeHeasb">
+              <PropertyRef Name="PazireshID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HospitalModelStoreContainer">
+          <EntitySet Name="tblBakhsh" EntityType="Self.tblBakhsh" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblOtagh" EntityType="Self.tblOtagh" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPaziresh" EntityType="Self.tblPaziresh" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblPezeshk" EntityType="Self.tblPezeshk" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTasviyeHeasb" EntityType="Self.tblTasviyeHeasb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblUsers" EntityType="Self.tblUsers" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblOtagh_tblBakhsh" Association="Self.FK_tblOtagh_tblBakhsh">
+            <End Role="tblBakhsh" EntitySet="tblBakhsh" />
+            <End Role="tblOtagh" EntitySet="tblOtagh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPaziresh_tblOtagh" Association="Self.FK_tblPaziresh_tblOtagh">
+            <End Role="tblOtagh" EntitySet="tblOtagh" />
+            <End Role="tblPaziresh" EntitySet="tblPaziresh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPaziresh_tblPaziresh" Association="Self.FK_tblPaziresh_tblPaziresh">
+            <End Role="tblPezeshk" EntitySet="tblPezeshk" />
+            <End Role="tblPaziresh" EntitySet="tblPaziresh" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblTasviyeHeasb_tblPaziresh" Association="Self.FK_tblTasviyeHeasb_tblPaziresh">
+            <End Role="tblPaziresh" EntitySet="tblPaziresh" />
+            <End Role="tblTasviyeHeasb" EntitySet="tblTasviyeHeasb" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HospitalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="HospitalEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblUsers" EntityType="HospitalModel.tblUser" />
+          <EntitySet Name="tblBakhshes" EntityType="HospitalModel.tblBakhsh" />
+          <EntitySet Name="tblOtaghs" EntityType="HospitalModel.tblOtagh" />
+          <AssociationSet Name="FK_tblOtagh_tblBakhsh" Association="HospitalModel.FK_tblOtagh_tblBakhsh">
+            <End Role="tblBakhsh" EntitySet="tblBakhshes" />
+            <End Role="tblOtagh" EntitySet="tblOtaghs" />
+          </AssociationSet>
+          <EntitySet Name="tblPazireshes" EntityType="HospitalModel.tblPaziresh" />
+          <EntitySet Name="tblPezeshks" EntityType="HospitalModel.tblPezeshk" />
+          <AssociationSet Name="FK_tblPaziresh_tblOtagh" Association="HospitalModel.FK_tblPaziresh_tblOtagh">
+            <End Role="tblOtagh" EntitySet="tblOtaghs" />
+            <End Role="tblPaziresh" EntitySet="tblPazireshes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblPaziresh_tblPaziresh" Association="HospitalModel.FK_tblPaziresh_tblPaziresh">
+            <End Role="tblPezeshk" EntitySet="tblPezeshks" />
+            <End Role="tblPaziresh" EntitySet="tblPazireshes" />
+          </AssociationSet>
+          <EntitySet Name="tblTasviyeHeasbs" EntityType="HospitalModel.tblTasviyeHeasb" />
+          <AssociationSet Name="FK_tblTasviyeHeasb_tblPaziresh" Association="HospitalModel.FK_tblTasviyeHeasb_tblPaziresh">
+            <End Role="tblPaziresh" EntitySet="tblPazireshes" />
+            <End Role="tblTasviyeHeasb" EntitySet="tblTasviyeHeasbs" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblUser">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PassWord" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Int16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblBakhsh">
+          <Key>
+            <PropertyRef Name="BakshID" />
+          </Key>
+          <Property Name="BakshID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BakhshName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblOtaghs" Relationship="HospitalModel.FK_tblOtagh_tblBakhsh" FromRole="tblBakhsh" ToRole="tblOtagh" />
+        </EntityType>
+        <EntityType Name="tblOtagh">
+          <Key>
+            <PropertyRef Name="OtaghID" />
+          </Key>
+          <Property Name="OtaghID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeOtagh" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BakshID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblBakhsh" Relationship="HospitalModel.FK_tblOtagh_tblBakhsh" FromRole="tblOtagh" ToRole="tblBakhsh" />
+          <NavigationProperty Name="tblPazireshes" Relationship="HospitalModel.FK_tblPaziresh_tblOtagh" FromRole="tblOtagh" ToRole="tblPaziresh" />
+        </EntityType>
+        <Association Name="FK_tblOtagh_tblBakhsh">
+          <End Type="HospitalModel.tblBakhsh" Role="tblBakhsh" Multiplicity="1" />
+          <End Type="HospitalModel.tblOtagh" Role="tblOtagh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBakhsh">
+              <PropertyRef Name="BakshID" />
+            </Principal>
+            <Dependent Role="tblOtagh">
+              <PropertyRef Name="BakshID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblPaziresh">
+          <Key>
+            <PropertyRef Name="PazireshID" />
+          </Key>
+          <Property Name="PazireshID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TarikhPaziresh" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PezeshkID" Type="Int32" Nullable="false" />
+          <Property Name="OtaghID" Type="Int32" Nullable="false" />
+          <Property Name="NameBimar" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastNameBimar" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CodeMelliBimar" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodeBimeBimar" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblOtagh" Relationship="HospitalModel.FK_tblPaziresh_tblOtagh" FromRole="tblPaziresh" ToRole="tblOtagh" />
+          <NavigationProperty Name="tblPezeshk" Relationship="HospitalModel.FK_tblPaziresh_tblPaziresh" FromRole="tblPaziresh" ToRole="tblPezeshk" />
+          <NavigationProperty Name="tblTasviyeHeasbs" Relationship="HospitalModel.FK_tblTasviyeHeasb_tblPaziresh" FromRole="tblPaziresh" ToRole="tblTasviyeHeasb" />
+        </EntityType>
+        <EntityType Name="tblPezeshk">
+          <Key>
+            <PropertyRef Name="PezeshkID" />
+          </Key>
+          <Property Name="PezeshkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblPazireshes" Relationship="HospitalModel.FK_tblPaziresh_tblPaziresh" FromRole="tblPezeshk" ToRole="tblPaziresh" />
+        </EntityType>
+        <Association Name="FK_tblPaziresh_tblOtagh">
+          <End Type="HospitalModel.tblOtagh" Role="tblOtagh" Multiplicity="1" />
+          <End Type="HospitalModel.tblPaziresh" Role="tblPaziresh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblOtagh">
+              <PropertyRef Name="OtaghID" />
+            </Principal>
+            <Dependent Role="tblPaziresh">
+              <PropertyRef Name="OtaghID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblPaziresh_tblPaziresh">
+          <End Type="HospitalModel.tblPezeshk" Role="tblPezeshk" Multiplicity="1" />
+          <End Type="HospitalModel.tblPaziresh" Role="tblPaziresh" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPezeshk">
+              <PropertyRef Name="PezeshkID" />
+            </Principal>
+            <Dependent Role="tblPaziresh">
+              <PropertyRef Name="PezeshkID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tblTasviyeHeasb">
+          <Key>
+            <PropertyRef Name="TasviyeHeasbID" />
+          </Key>
+          <Property Name="TasviyeHeasbID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PazireshID" Type="Int32" Nullable="false" />
+          <Property Name="Mablagh" Type="Int64" Nullable="false" />
+          <Property Name="TarikhTasviyeHeasb" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblPaziresh" Relationship="HospitalModel.FK_tblTasviyeHeasb_tblPaziresh" FromRole="tblTasviyeHeasb" ToRole="tblPaziresh" />
+        </EntityType>
+        <Association Name="FK_tblTasviyeHeasb_tblPaziresh">
+          <End Type="HospitalModel.tblPaziresh" Role="tblPaziresh" Multiplicity="1" />
+          <End Type="HospitalModel.tblTasviyeHeasb" Role="tblTasviyeHeasb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblPaziresh">
+              <PropertyRef Name="PazireshID" />
+            </Principal>
+            <Dependent Role="tblTasviyeHeasb">
+              <PropertyRef Name="PazireshID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HospitalModelStoreContainer" CdmEntityContainer="HospitalEntities">
+          <EntitySetMapping Name="tblUsers">
+            <EntityTypeMapping TypeName="HospitalModel.tblUser">
+              <MappingFragment StoreEntitySet="tblUsers">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="PassWord" ColumnName="PassWord" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblBakhshes">
+            <EntityTypeMapping TypeName="HospitalModel.tblBakhsh">
+              <MappingFragment StoreEntitySet="tblBakhsh">
+                <ScalarProperty Name="BakhshName" ColumnName="BakhshName" />
+                <ScalarProperty Name="BakshID" ColumnName="BakshID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblOtaghs">
+            <EntityTypeMapping TypeName="HospitalModel.tblOtagh">
+              <MappingFragment StoreEntitySet="tblOtagh">
+                <ScalarProperty Name="BakshID" ColumnName="BakshID" />
+                <ScalarProperty Name="CodeOtagh" ColumnName="CodeOtagh" />
+                <ScalarProperty Name="OtaghID" ColumnName="OtaghID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPazireshes">
+            <EntityTypeMapping TypeName="HospitalModel.tblPaziresh">
+              <MappingFragment StoreEntitySet="tblPaziresh">
+                <ScalarProperty Name="CodeBimeBimar" ColumnName="CodeBimeBimar" />
+                <ScalarProperty Name="CodeMelliBimar" ColumnName="CodeMelliBimar" />
+                <ScalarProperty Name="LastNameBimar" ColumnName="LastNameBimar" />
+                <ScalarProperty Name="NameBimar" ColumnName="NameBimar" />
+                <ScalarProperty Name="OtaghID" ColumnName="OtaghID" />
+                <ScalarProperty Name="PezeshkID" ColumnName="PezeshkID" />
+                <ScalarProperty Name="TarikhPaziresh" ColumnName="TarikhPaziresh" />
+                <ScalarProperty Name="PazireshID" ColumnName="PazireshID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblPezeshks">
+            <EntityTypeMapping TypeName="HospitalModel.tblPezeshk">
+              <MappingFragment StoreEntitySet="tblPezeshk">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PezeshkID" ColumnName="PezeshkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTasviyeHeasbs">
+            <EntityTypeMapping TypeName="HospitalModel.tblTasviyeHeasb">
+              <MappingFragment StoreEntitySet="tblTasviyeHeasb">
+                <ScalarProperty Name="TarikhTasviyeHeasb" ColumnName="TarikhTasviyeHeasb" />
+                <ScalarProperty Name="Mablagh" ColumnName="Mablagh" />
+                <ScalarProperty Name="PazireshID" ColumnName="PazireshID" />
+                <ScalarProperty Name="TasviyeHeasbID" ColumnName="TasviyeHeasbID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
